@@ -1,2 +1,2 @@
 all:
-	gcc rosie.c -o rosie.o
+	gcc rosie.c board_rep.c -o rosie.o

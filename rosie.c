@@ -1,26 +1,20 @@
-#include "defs.h"
-#include "square_lookup.h"
-
+#include "global_defs.h"
+#include "board_rep.h"
 #include <stdio.h>
 
 int main()
 {
-	// AllInit();
-	// printf("%d", sq120ToSq64[35]);
-	
-	for (int i = 0; i < BRD_SQ_NUM; i++) {
-		if (i % 10 == 0) printf("\n");
-		printf("%5d", sq120ToSq64[i]);
-	}
+	U64 playBitBoard = 0b0;
+	playBitBoard |= (0b1 << sq120ToSq64[D2]);
+	playBitBoard |= (0b1 << sq120ToSq64[D4]);
+	playBitBoard |= (0b1 << sq120ToSq64[D3]);
+	print_bitboard(playBitBoard);
 
-	printf("\n");
-	printf("\n");
-	
-	for (int i = 0; i < 64; i++) {
-		if (i % 8 == 0) printf("\n");
-		printf("%5d", sq64ToSq120[i]);
+	int sq64 = 0;
+	while (playBitBoard) {
+		sq64 = pop_bit(&playBitBoard);
+		printf("popped:%d\n", sq64);
 	}
-	printf("\n");
 
 	return 0;
 }
