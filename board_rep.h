@@ -3,21 +3,27 @@
  *
  * Source Files:
  * board_rep.c
+ * bitboard.c
+ * hashkey.c
  *
  * Author: Luca Negris
  * Modified: 12/14/2024 
  */
-
 #ifndef BOARD_REP_H
 #define BOARD_REP_H
 
 #include "global_defs.h"
 #include <stdint.h>
+
+
+/* ==========================================================================
+ * Common 
+ * ========================================================================== */
+
+/***Typedefs***/
+
 // number of squares in our 10 x 12
 #define BRD_SQ_NUM 120
-
-/*** Types for board representation ***/
-
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE };
 enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
@@ -43,9 +49,8 @@ typedef struct {
 	int enPassantSquare;
 	int fiftyMoveCounter;
 	U64 positionKey;
-
 } PastState;
-// stores board state in a hybrid manner
+
 typedef struct {
 	// Tracks state of each square
 	int pieces[BRD_SQ_NUM];
@@ -61,7 +66,7 @@ typedef struct {
 	int ply;
 	unsigned char castlePerm;
 	// unique key for each position
-	U64 positionKey;
+	U64 hashKey;
 	// How many pieces of each type are on the board
 	int pieceCounts[13];
 	// Store by color the number of non pawns on the board
@@ -78,21 +83,50 @@ typedef struct {
 	int pieceList[13][10];		
 } BoardState;
 
-/*** Functions ***/
+/***Functions***/
 
+// inits all data structures
+int init(void);
 int file_and_rank_to_120(int f, int r);
 int file_and_rank_to_64(int f, int r);
-// print a bitboard with 'X' marking occupied squares
-int print_bitboard(U64 bb);
-// returns the index of the lowest bit and sets that bit to 0
-int pop_bit(U64 *bb);
-// returns the number of bits in the bitboard
-int count_bits(U64 b);
 
-/*** Constants ***/
+/***Constants***/
 // lookup arrays to convert between indices of 120 square and 64 square boards
 extern const int sq64ToSq120[64];
 extern const int sq120ToSq64[120];
+
+
+/* ==========================================================================
+ * Bitboards
+ * ========================================================================== */
+
+
+/***Functions***/
+
+int init_bit_mask(void);
+int print_bitboard(U64 bb);
+// pops lowest bit
+int pop_bit(U64 *bb);
+int count_bits(U64 b);
+int set_bit(U64 *bb, int sq);
+int clear_bit(U64 *bb, int sq);
+
+/***Constants***/
 extern const int bitTable[64];
+
+/* ==========================================================================
+ * Hashkey
+ * ========================================================================== */
+
+
+/***Functions***/
+
+int init_hashkeys(void);
+U64 generate_position_key(const BoardState const *state);
+
+/***Globals***/
+extern U64 pieceKeys[13][BRD_SQ_NUM];
+extern U64 sideKey;
+extern U64 castleKeys[16];
 
 #endif

@@ -1,20 +1,25 @@
 #include "global_defs.h"
 #include "board_rep.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-	U64 playBitBoard = 0b0;
-	playBitBoard |= (0b1 << sq120ToSq64[D2]);
-	playBitBoard |= (0b1 << sq120ToSq64[D4]);
-	playBitBoard |= (0b1 << sq120ToSq64[D3]);
-	print_bitboard(playBitBoard);
 
-	int sq64 = 0;
-	while (playBitBoard) {
-		sq64 = pop_bit(&playBitBoard);
-		printf("popped:%d\n", sq64);
-	}
+	init();
+
+	int piece1 = rand();
+	int piece2 = rand();
+	int piece3 = rand();
+	int piece4 = rand();
+
+	printf("Piece1:%X\n", piece1);
+	printf("Piece1:%X\n", piece2);
+	printf("Piece1:%X\n", piece3);
+	printf("Piece1:%X\n", piece4);
+	
+	int key = piece1 ^ piece2 ^ piece3 ^ piece4;
+	printf("Key:%X\n", key);
 
 	return 0;
 }
