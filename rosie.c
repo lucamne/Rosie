@@ -8,18 +8,17 @@ int main()
 
 	init();
 
-	int piece1 = rand();
-	int piece2 = rand();
-	int piece3 = rand();
-	int piece4 = rand();
+	BoardState* state = malloc(sizeof(BoardState));
+	assert(state);
 
-	printf("Piece1:%X\n", piece1);
-	printf("Piece1:%X\n", piece2);
-	printf("Piece1:%X\n", piece3);
-	printf("Piece1:%X\n", piece4);
-	
-	int key = piece1 ^ piece2 ^ piece3 ^ piece4;
-	printf("Key:%X\n", key);
+	parse_fen(STARTING_FEN, state);
+	print_board(state);
+	parse_fen(FEN1, state);
+	print_board(state);
+	parse_fen(FEN2, state);
+	print_board(state);
+	parse_fen(FEN3, state);
+	print_board(state);
 
 	return 0;
 }

@@ -41,7 +41,7 @@ U64 generate_position_key(const BoardState const *state) {
 
 	if (state->enPassantSquare != NO_SQ)
 	{
-		assert(state->enPassantSquare >= A1 && state->enPassantSquare < NO_SQ);
+		assert(state->enPassantSquare >= A1 && state->enPassantSquare <= H8);
 		key ^= pieceKeys[EMPTY][state->enPassantSquare];
 	}
 

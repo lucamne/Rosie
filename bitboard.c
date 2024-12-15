@@ -16,8 +16,8 @@ int print_bitboard(U64 bb) {
 	int sq64 = 0;
 
 	printf("\n");
-	for(Rank rank = RANK_8; rank >= RANK_1; rank--) {
-		for(File file = FILE_A; file <= FILE_H; file++) {
+	for(int rank = RANK_8; rank >= RANK_1; rank--) {
+		for(int file = FILE_A; file <= FILE_H; file++) {
 			sq64 = file_and_rank_to_64(file, rank);
 			if((mask << sq64) & bb) {
 				printf("X");

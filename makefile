@@ -1,2 +1,2 @@
 all:
-	gcc rosie.c bitboard.c hashkey.c board.c -o rosie.o -Wextra
+	gcc rosie.c bitboard.c hashkey.c board.c data.c -o rosie.o -Wextra

@@ -94,9 +94,11 @@ typedef struct {
 
 // inits all data structures
 int init(void);
-SQ120 file_and_rank_to_120(File f, Rank r);
-int file_and_rank_to_64(File f, Rank r);
+SQ120 file_and_rank_to_120(int f, int r);
+int file_and_rank_to_64(int f, int r);
 int reset_board(BoardState *state);
+int parse_fen(char* fen, BoardState* state);
+int print_board(const BoardState* state);
 
 /***Constants***/
 // lookup arrays to convert between indices of 120 square and 64 square boards
@@ -137,5 +139,16 @@ U64 generate_position_key(const BoardState const *state);
 extern U64 pieceKeys[13][BRD_SQ_NUM];
 extern U64 sideKey;
 extern U64 castleKeys[16];
+
+
+/* ==========================================================================
+ * DATA
+ * ========================================================================== */
+
+/***CONSTANTS***/
+extern const char* pieceChar;
+extern const char* sideChar;
+extern const char* rankChar;
+extern const char* fileChar;
 
 #endif

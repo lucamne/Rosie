@@ -7,11 +7,11 @@ int init(void) {
 	return 0;
 }
 
-SQ120 file_and_rank_to_120(File f, Rank r) {
+SQ120 file_and_rank_to_120(int f, int r) {
 	return ((21 + f) + (r * 10));
 }
 
-int file_and_rank_to_64(File f, Rank r) {
+int file_and_rank_to_64(int f, int r) {
 	return ((r * 8) + f);
 }
 
@@ -19,8 +19,8 @@ int parse_fen(char* fen, BoardState* state) {
 	assert(fen);
 	assert(state);
 
-	Rank rank = RANK_8;
-	File file = FILE_A;
+	int rank = RANK_8;
+	int file = FILE_A;
 
 	reset_board(state);
 
@@ -42,14 +42,14 @@ int parse_fen(char* fen, BoardState* state) {
 			case 'K': piece = wK; break;
 			case 'Q': piece = wQ; break;
 
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
 				piece = EMPTY;
 				count =  *fen - '0';
 				break;
@@ -63,7 +63,7 @@ int parse_fen(char* fen, BoardState* state) {
 				continue;
 
 			default:
-				printf("FEN error \n");
+				printf("FEN error\nCurr char: %c\nCurr rank:%d\n", *fen, rank);
 				return -1;
 		}
 		
@@ -152,6 +152,39 @@ int reset_board(BoardState *state) {
 	state->historyPly = 0;
 	state->castlePerm = 0;
 	state->positionKey = 0ULL;
+
+	return 0;
+}
+
+int print_board(const BoardState* state) {
+
+	printf("\nGame Board:\n\n");
+
+	for (int rank = RANK_8; rank >= RANK_1; rank--) {
+		printf("%d  ", rank + 1);
+		for (int file = FILE_A; file <= FILE_H; file++) {
+			const int sq120 = file_and_rank_to_120(file, rank);
+			const Piece piece = state->pieces[sq120];
+			printf("%3c", pieceChar[piece]);
+		}
+		printf("\n");
+	}
+	
+	printf("\n   ");
+	for(int file = FILE_A; file <= FILE_H; file++) {
+		printf("%3C", 'a' + file);
+	}
+
+	printf("\n\n");
+	printf("side:%c\n", sideChar[state->sideToMove]);
+	printf("enPas:%d\n", state->enPassantSquare);
+	printf("castle:%c%c%c%c\n",
+			state->castlePerm & WKCA ? 'K' : '-',
+			state->castlePerm & WQCA ? 'Q' : '-',
+			state->castlePerm & BKCA ? 'k' : '-',
+			state->castlePerm & WQCA ? 'q' : '-' );
+
+	printf("Position Key:%luX\n", state->positionKey);
 
 	return 0;
 }
