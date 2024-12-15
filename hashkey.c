@@ -10,9 +10,9 @@ U64 random64(void) {
 }
 
 int init_hashkeys(void) {
-	for (int i = 0; i < 13; i++) {
-		for (int j = 0; j < 120; j++) {
-			pieceKeys[i][j] = random64();
+	for (Piece p = EMPTY; p <= bK; p++) {
+		for (int s = 0; s < BRD_SQ_NUM; s++) {
+			pieceKeys[p][s] = random64();
 		}
 	}
 	sideKey = random64();
@@ -23,12 +23,12 @@ int init_hashkeys(void) {
 
 U64 generate_position_key(const BoardState const *state) {
 	U64 key = 0;
-	int piece = EMPTY;
+	Piece piece = EMPTY;
 
 	// pieces
 	for (int sq = 0; sq < BRD_SQ_NUM; sq++) {
 		piece = state->pieces[sq];
-		if(piece != NO_SQ && piece != EMPTY)
+		if(piece != EMPTY && sq120ToSq64[sq] != NO_SQ)
 		{
 			assert(piece >= wP && piece <= bK);
 			key ^= pieceKeys[piece][sq];
@@ -41,7 +41,7 @@ U64 generate_position_key(const BoardState const *state) {
 
 	if (state->enPassantSquare != NO_SQ)
 	{
-		assert(state->enPassantSquare >= 0 && state->enPassantSquare < BRD_SQ_NUM);
+		assert(state->enPassantSquare >= A1 && state->enPassantSquare < NO_SQ);
 		key ^= pieceKeys[EMPTY][state->enPassantSquare];
 	}
 
