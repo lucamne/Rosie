@@ -11,14 +11,20 @@ int main()
 	BoardState* state = malloc(sizeof(BoardState));
 	assert(state);
 
-	parse_fen(STARTING_FEN, state);
+	parse_fen(FEN4, state);
+
 	print_board(state);
-	parse_fen(FEN1, state);
-	print_board(state);
-	parse_fen(FEN2, state);
-	print_board(state);
-	parse_fen(FEN3, state);
-	print_board(state);
+
+	printf("\nwP:\n");
+	print_bitboard(state->pawns[WHITE]);
+	printf("\nbP:\n");
+	print_bitboard(state->pawns[BLACK]);
+	printf("\nall P::\n");
+	print_bitboard(state->pawns[BOTH]);
+
+	// state->pieceCounts[wP]--;
+
+	assert(check_board(state));
 
 	return 0;
 }
