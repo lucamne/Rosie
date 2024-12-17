@@ -51,35 +51,35 @@ enum {
 /* 7 bits are needed to represent square 64
  * 12 pieces (Not including EMPTY or OFFBOARD) will fit into 4 bits
  *
- * 0000 0000 0000 0000 0000 0111 1111 -> From square
- * 0000 0000 0000 0011 1111 1000 0000 -> To square
- * 0000 0000 0011 1100 0000 0000 0000 -> Captured piece
- * 0000 0000 0100 0000 0000 0000 0000 -> is En Passant capture?
- * 0000 0000 1000 0000 0000 0000 0000 -> Pawn start
- * 0000 1111 0000 0000 0000 0000 0000 -> Pawn Promotion
- * 0001 0000 0000 0000 0000 0000 0000 -> Was Castling Move?
+ * 0000 0000 0000 0000 0000 0111 1111 -> From square >> 0, 0x7F
+ * 0000 0000 0000 0011 1111 1000 0000 -> To square >> 7, 0x7f
+ * 0000 0000 0011 1100 0000 0000 0000 -> Captured piece >> 14, 0xF
+ * 0000 0011 1100 0000 0000 0000 0000 -> Pawn Promotion >> 18, 0xF
+ * 0000 0100 0000 0000 0000 0000 0000 -> is En Passant capture? 0x400000
+ * 0000 1000 0000 0000 0000 0000 0000 -> Pawn start 0x800000
+ * 0001 0000 0000 0000 0000 0000 0000 -> Was Castling Move? 0x1000000
  * */
 
-typedef struct {
-	unsigned int from : 7;
-	unsigned int to : 7;
-	unsigned int captured_piece : 4;
-	unsigned int ppromote : 4;
-	unsigned int ep : 1;
-	unsigned int pstart : 1;
-	unsigned int castle : 1;
-	unsigned int capture_occured : 1;:
-} MoveBitfield;
+// move accessors
+static inline int get_from_sq(int move) { return move & 0x7F; }
+static inline int get_to_sq(int move) { return move & (0x7F << 7); }
+static inline int get_captured_piece(int move) { return move & (0xF << 14); }
+static inline int get_pawn_promotion(int move) { return move & (0xF << 18); }
+// move flags
+static const int f_ep_capture = 0x400000;
+static const int f_pawn_start = 0x800000;
+static const int f_castle = 0x1000000;
+static const int f_capture = 0x43C000;
+static const int f_promotion = 0x3C0000;
 
-
 typedef struct {
-	MoveBitfield move;
+	int move;
 	int score;
 } Move;
 
 // Stores a past board state
 typedef struct {
-	MoveBitfield move;
+	int move;
 	unsigned char castlePerm;
 	int enPassantSquare;
 	int fiftyMoveCounter;
