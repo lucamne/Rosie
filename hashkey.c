@@ -1,4 +1,4 @@
-#include "board_rep.h"
+#include "defs.h"
 #include <stdlib.h>
 
 U64 pieceKeys[13][BRD_SQ_NUM];
@@ -25,7 +25,7 @@ U64 generate_position_key(const BoardState const *state) {
 	U64 key = 0;
 	// pieces
 	for (int sq = 0; sq < BRD_SQ_NUM; sq++) {
-		Piece piece = state->pieces[sq];
+		int piece = state->pieces[sq];
 		if(piece != EMPTY && piece != OFFBOARD)
 		{
 			assert(piece >= wP && piece <= bK);

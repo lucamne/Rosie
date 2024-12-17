@@ -1,4 +1,4 @@
-#include "board_rep.h"
+#include "defs.h"
 #include <stdio.h>
 
 int init(void) {
@@ -26,7 +26,7 @@ int parse_fen(char* fen, BoardState* state) {
 
 	while ((rank >= RANK_1) && *fen) {
 		int count = 1;
-		Piece piece = EMPTY;
+		int piece = EMPTY;
 
 		switch (*fen) {
 			case 'p': piece = bP; break;
@@ -167,7 +167,7 @@ int print_board(const BoardState* state) {
 		printf("%d  ", rank + 1);
 		for (int file = FILE_A; file <= FILE_H; file++) {
 			const int sq120 = file_and_rank_to_120(file, rank);
-			const Piece piece = state->pieces[sq120];
+			const int piece = state->pieces[sq120];
 			printf("%3c", PIECE_CHAR[piece]);
 		}
 		printf("\n");
@@ -195,8 +195,8 @@ int print_board(const BoardState* state) {
 int update_material_list(BoardState* state) {
 
 	for (int sq120 = 0; sq120 < BRD_SQ_NUM; sq120++) {
-		Piece piece = state->pieces[sq120];
-		Color color = PIECE_COLOR[piece];
+		int piece = state->pieces[sq120];
+		int color = PIECE_COLOR[piece];
 		if (piece != OFFBOARD && piece != EMPTY && color != BOTH) {
 
 			// update piece counts and squares

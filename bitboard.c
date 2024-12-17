@@ -1,4 +1,4 @@
-#include "board_rep.h"
+#include "defs.h"
 #include <stdio.h>
 
 const int bitTable[64] = {

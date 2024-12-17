@@ -1,4 +1,4 @@
-#include "board_rep.h"
+#include "defs.h"
 
 // '?' corresponds to offboard piece, if this is printed there is an issue
 const char* PIECE_CHAR = "?.PNBRQKpnbrqk";
@@ -40,3 +40,10 @@ const int SQ_TO_RANK[BRD_SQ_NUM] = {
 	RANK_NONE, RANK_8, RANK_8, RANK_8, RANK_8, RANK_8, RANK_8, RANK_8, RANK_8, RANK_NONE,
 	RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE,
 	RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE };
+
+const int PIECE_KNIGHT[PIECE_NUM] = {0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
+const int PIECE_KING[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
+const int PIECE_ROOK_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0};
+const int PIECE_BISHOP_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0};
+
+
