@@ -26,6 +26,7 @@
 #define PIECE_NUM 14
 #define COLOR_NUM 3
 #define MAX_GAME_MOVES 2048
+#define MAX_POSITION_MOVES 256
 
 typedef  uint64_t U64;
 enum { OFFBOARD, EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
@@ -62,9 +63,9 @@ enum {
 
 // move accessors
 static inline int get_from_sq(int move) { return move & 0x7F; }
-static inline int get_to_sq(int move) { return move & (0x7F << 7); }
-static inline int get_captured_piece(int move) { return move & (0xF << 14); }
-static inline int get_pawn_promotion(int move) { return move & (0xF << 18); }
+static inline int get_to_sq(int move) { return (move >> 7) & 0x7F; }
+static inline int get_captured_piece(int move) { return (move >> 14) & 0xF; }
+static inline int get_promotion(int move) { return (move >> 18) & 0xF; }
 // move flags
 static const int f_ep_capture = 0x400000;
 static const int f_pawn_start = 0x800000;
@@ -72,10 +73,16 @@ static const int f_castle = 0x1000000;
 static const int f_capture = 0x43C000;
 static const int f_promotion = 0x3C0000;
 
+/***STRUCTS***/
 typedef struct {
 	int move;
 	int score;
 } Move;
+
+typedef struct {
+	Move moves[MAX_POSITION_MOVES];
+	int count;
+} MoveList;
 
 // Stores a past board state
 typedef struct {
@@ -199,7 +206,7 @@ extern const int SQ_TO_RANK[BRD_SQ_NUM];
 
 
 /* ==========================================================================
- * ATTACK
+ * ATTACK: attack.c
  * ========================================================================== */
 
 
@@ -211,5 +218,14 @@ extern const int PIECE_KNIGHT[PIECE_NUM];
 extern const int PIECE_KING[PIECE_NUM];
 extern const int PIECE_ROOK_QUEEN[PIECE_NUM];
 extern const int PIECE_BISHOP_QUEEN[PIECE_NUM];
+
+/* ==========================================================================
+ * IO: io.c
+ * ========================================================================== */
+
+// caller MUST free returned pointer
+char* print_sq(const int sq120);
+// caller MUST free returned pointer
+char* print_move(const int move);
 
 #endif
