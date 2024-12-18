@@ -1,16 +1,16 @@
 #include "defs.h"
 
 // '?' corresponds to offboard piece, if this is printed there is an issue
-const char* PIECE_CHAR = "?.PNBRQKpnbrqk";
+const char* PIECE_CHAR = ".PNBRQKpnbrqk?";
 const char* SIDE_CHAR = "wb-";
 const char* RANK_CHAR = "12345678";
 const char* FILE_CHAR = "abcdefgh";
 
-const bool PIECE_BIG[PIECE_NUM] = { false, false, false, true, true, true, true, true, false, true, true, true, true, true };
-const bool PIECE_MAJOR[PIECE_NUM] = { false, false, false, false, false, true, true, true, false, false, false, true, true, true };
-const bool PIECE_MINOR[PIECE_NUM] = { false, false, false, true, true, false, false, false, false, true, true, false, false, false };
-const int PIECE_VAL[PIECE_NUM] = { 0, 0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000 };
-const int PIECE_COLOR[PIECE_NUM] = { BOTH, BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK };
+const bool PIECE_BIG[PIECE_NUM] = { false, false, true, true, true, true, true, false, true, true, true, true, true };
+const bool PIECE_MAJOR[PIECE_NUM] = { false, false, false, false, true, true, true, false, false, false, true, true, true };
+const bool PIECE_MINOR[PIECE_NUM] = { false, false, true, true, false, false, false, false, true, true, false, false, false };
+const int PIECE_VAL[PIECE_NUM] = { 0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000 };
+const int PIECE_COLOR[PIECE_NUM] = { BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK };
 
 const int SQ_TO_FILE[BRD_SQ_NUM] = { 
 	FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE, FILE_NONE,
@@ -41,9 +41,9 @@ const int SQ_TO_RANK[BRD_SQ_NUM] = {
 	RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE,
 	RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE, RANK_NONE };
 
-const int PIECE_KNIGHT[PIECE_NUM] = {0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
-const int PIECE_KING[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
-const int PIECE_ROOK_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0};
-const int PIECE_BISHOP_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0};
+const int PIECE_KNIGHT[PIECE_NUM] = {0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
+const int PIECE_KING[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
+const int PIECE_ROOK_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0};
+const int PIECE_BISHOP_QUEEN[PIECE_NUM] = {0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0};
 
 

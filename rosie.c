@@ -2,33 +2,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define PAWNMOVES "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
+
 int main()
 {
 
 	init();
+	
+	BoardState* state = malloc(sizeof(BoardState));
 
-	int move = 0;
+	parse_fen(PAWNMOVES, state);
+	assert(check_board);
 
-	int from = A2;
-	int to = H7;
-	int captured = wR;
-	int promoted = bK;
+	print_board(state);
 
-	move = from | (to << 7) | (captured << 14) | (promoted << 18);
+	MoveList* list = malloc(sizeof(MoveList));
 
-	printf("from:%d to :%d cap:%d prom:%d\n", 
-			get_from_sq(move), get_to_sq(move), get_captured_piece(move),
-			get_promotion(move));
+	generate_all_moves(state, list);
 
-	char* s = print_sq(from);	
-	printf("Algebraic from: %s\n", s);
-	free(s);
-	s = print_sq(to);
-	printf("Algebraic to: %s\n", s); 
-	free(s);
-	s = print_move(move);
-	printf("Algebraic move: %s\n",s);
-	free(s);
+	print_move_list(list);
 
 	return 0;
 }

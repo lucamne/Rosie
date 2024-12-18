@@ -23,13 +23,13 @@
 
 // number of squares in our 10 x 12
 #define BRD_SQ_NUM 120
-#define PIECE_NUM 14
+#define PIECE_NUM 13
 #define COLOR_NUM 3
 #define MAX_GAME_MOVES 2048
 #define MAX_POSITION_MOVES 256
 
 typedef  uint64_t U64;
-enum { OFFBOARD, EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
+enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK, OFFBOARD };
 enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE };
 enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
 enum { WHITE, BLACK, BOTH };
@@ -62,20 +62,20 @@ enum {
  * */
 
 // move accessors
-static inline int get_from_sq(int move) { return move & 0x7F; }
-static inline int get_to_sq(int move) { return (move >> 7) & 0x7F; }
-static inline int get_captured_piece(int move) { return (move >> 14) & 0xF; }
-static inline int get_promotion(int move) { return (move >> 18) & 0xF; }
+static inline int get_from_sq(unsigned int move) { return move & 0x7F; }
+static inline int get_to_sq(unsigned int move) { return (move >> 7) & 0x7F; }
+static inline int get_captured_piece(unsigned int move) { return (move >> 14) & 0xF; }
+static inline int get_promotion(unsigned int move) { return (move >> 18) & 0xF; }
 // move flags
-static const int f_ep_capture = 0x400000;
-static const int f_pawn_start = 0x800000;
-static const int f_castle = 0x1000000;
-static const int f_capture = 0x43C000;
-static const int f_promotion = 0x3C0000;
+static const int F_EP_CAPTURE = 0x400000;
+static const int F_PAWN_START = 0x800000;
+static const int F_CASTLE = 0x1000000;
+static const int F_CAPTURE = 0x43C000;
+static const int F_PROMOTION = 0x3C0000;
 
 /***STRUCTS***/
 typedef struct {
-	int move;
+	unsigned int move;
 	int score;
 } Move;
 
@@ -178,8 +178,7 @@ int init_hashkeys(void);
 U64 generate_position_key(const BoardState const *state);
 
 /***GLOBALS***/
-// Offboard piece not used in creating hashkey, empty is used for en passant square
-extern U64 pieceKeys[PIECE_NUM - 1][BRD_SQ_NUM];
+extern U64 pieceKeys[PIECE_NUM][BRD_SQ_NUM];
 extern U64 sideKey;
 extern U64 castleKeys[16];
 
@@ -203,6 +202,11 @@ extern const int PIECE_COLOR[PIECE_NUM];
 extern const int SQ_TO_FILE[BRD_SQ_NUM];
 extern const int SQ_TO_RANK[BRD_SQ_NUM];
 
+extern const int PIECE_KNIGHT[PIECE_NUM];
+extern const int PIECE_KING[PIECE_NUM];
+extern const int PIECE_ROOK_QUEEN[PIECE_NUM];
+extern const int PIECE_BISHOP_QUEEN[PIECE_NUM];
+
 
 /* ==========================================================================
  * ATTACK: attack.c
@@ -212,21 +216,14 @@ extern const int SQ_TO_RANK[BRD_SQ_NUM];
 /***FUNCTIONS***/
 bool sq_attacked(const int sq120, const int side, const BoardState* state);
 
-/***CONSTANTS***/
-extern const int PIECE_KNIGHT[PIECE_NUM];
-extern const int PIECE_KING[PIECE_NUM];
-extern const int PIECE_ROOK_QUEEN[PIECE_NUM];
-extern const int PIECE_BISHOP_QUEEN[PIECE_NUM];
-
 /* ==========================================================================
  * IO: io.c
  * ========================================================================== */
 
 /***FUNCTIONS***/
-// caller MUST free returned pointer
 char* print_sq(const int sq120);
-// caller MUST free returned pointer
-char* print_move(const int move);
+char* print_move(const unsigned int move);
+int print_move_list(const MoveList* list);
 
 /* ==========================================================================
  * VALIDATE: validate.c
@@ -237,4 +234,11 @@ bool sq_on_board(const int sq);
 bool side_valid(const int side);
 bool file_rank_valid(const int fr);
 bool piece_valid_empty(const int p); 
+
+/* ==========================================================================
+ * MOVEGEN: movegen.c
+ * ========================================================================== */
+
+/***FUNTIONS***/
+int generate_all_moves(const BoardState* state, MoveList* list);
 #endif

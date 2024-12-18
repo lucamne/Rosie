@@ -1,7 +1,7 @@
 #include "defs.h"
 #include <stdlib.h>
 
-U64 pieceKeys[13][BRD_SQ_NUM];
+U64 pieceKeys[PIECE_NUM][BRD_SQ_NUM];
 U64 sideKey;
 U64 castleKeys[16];
 

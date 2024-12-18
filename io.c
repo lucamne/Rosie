@@ -2,9 +2,9 @@
 #include "defs.h"
 #include <stdlib.h>
 
-// caller must free this pointer
 char* print_sq(const int sq120) {
-	char* sq_str = malloc(sizeof(char) * 3);
+	// string is static so that output can easily be passed many times to printf
+	static char sq_str[3];
 	assert(sq_str);
 
 	const int file = SQ_TO_FILE[sq120];
@@ -15,10 +15,9 @@ char* print_sq(const int sq120) {
 	return sq_str;
 }
 
-// caller must free this pointer
-char* print_move(const int move) {
-
-	char* mv_str = malloc(sizeof(char) * 6);
+char* print_move(const unsigned int move) {
+	// string is static so that output can easily be passed many times to printf
+	static char mv_str[6]; 
 	const int ff = SQ_TO_FILE[get_from_sq(move)];
 	const int rf = SQ_TO_RANK[get_from_sq(move)];
 	const int ft = SQ_TO_FILE[get_to_sq(move)];
@@ -41,4 +40,18 @@ char* print_move(const int move) {
 	}
 
 	return mv_str;
+}
+
+int print_move_list(const MoveList* list) {
+
+	printf("MoveList:\n");
+	for(int i = 0; i < list->count; i++) {
+		const int move = list->moves[i].move;
+		const int score = list->moves[i].score;
+
+		printf("Move: %d > %s (score: %d)\n", i + 1, print_move(move), score);
+	}
+	printf("MoveList Total %d Moves:\n\n", list->count);
+
+	return 0;
 }

@@ -142,7 +142,7 @@ int reset_board(BoardState *state) {
 		state->pawns[c] = 0ULL;
 	}
 	// reset piece counts by type
-	for (int p = OFFBOARD; p <= bK; p++) {
+	for (int p = EMPTY; p <= bK; p++) {
 		state->pieceCounts[p] = 0;
 	}
 
@@ -230,7 +230,7 @@ int update_material_list(BoardState* state) {
 
 bool check_board(const BoardState* state) {
 
-	int _pieceCounts[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int _pieceCounts[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	int _bigPieceCounts[COLOR_NUM - 1] = {0, 0};
 	int _majorPieceCounts[COLOR_NUM - 1] = {0, 0};
 	int _minorPieceCounts[COLOR_NUM - 1] = {0, 0};
