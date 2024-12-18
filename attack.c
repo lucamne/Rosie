@@ -8,6 +8,10 @@ const int KI_DIR[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 
 bool sq_attacked(const int sq120, const int attacking_side, const BoardState* state) {
 
+	assert(sq_on_board(sq120));
+	assert(side_valid(attacking_side));
+	assert(check_board(state));
+
 	// check pawn attacks
 	if (attacking_side == WHITE) {
 		if (state->pieces[sq120 - 11] == wP || state->pieces[sq120 - 9] == wP) {

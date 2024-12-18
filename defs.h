@@ -131,7 +131,6 @@ typedef struct {
  * BOARD
  * ========================================================================== */
 
-
 /***FUNCTIONS***/
 
 // inits all data structures
@@ -223,9 +222,19 @@ extern const int PIECE_BISHOP_QUEEN[PIECE_NUM];
  * IO: io.c
  * ========================================================================== */
 
+/***FUNCTIONS***/
 // caller MUST free returned pointer
 char* print_sq(const int sq120);
 // caller MUST free returned pointer
 char* print_move(const int move);
 
+/* ==========================================================================
+ * VALIDATE: validate.c
+ * ========================================================================== */
+
+/***FUNCTIONS***/
+bool sq_on_board(const int sq);
+bool side_valid(const int side);
+bool file_rank_valid(const int fr);
+bool piece_valid_empty(const int p); 
 #endif
