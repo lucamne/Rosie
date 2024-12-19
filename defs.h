@@ -193,19 +193,20 @@ extern const char* SIDE_CHAR;
 extern const char* RANK_CHAR;
 extern const char* FILE_CHAR;
 
-extern const bool PIECE_BIG[PIECE_NUM];
-extern const bool PIECE_MAJOR[PIECE_NUM];
-extern const bool PIECE_MINOR[PIECE_NUM];
 extern const int PIECE_VAL[PIECE_NUM];
 extern const int PIECE_COLOR[PIECE_NUM];
 
+extern const bool PIECE_BIG[PIECE_NUM];
+extern const bool PIECE_MAJOR[PIECE_NUM];
+extern const bool PIECE_MINOR[PIECE_NUM];
+extern const bool PIECE_KNIGHT[PIECE_NUM];
+extern const bool PIECE_KING[PIECE_NUM];
+extern const bool PIECE_ROOK_QUEEN[PIECE_NUM];
+extern const bool PIECE_BISHOP_QUEEN[PIECE_NUM];
+extern const bool PIECE_SLIDES[PIECE_NUM];
+
 extern const int SQ_TO_FILE[BRD_SQ_NUM];
 extern const int SQ_TO_RANK[BRD_SQ_NUM];
-
-extern const int PIECE_KNIGHT[PIECE_NUM];
-extern const int PIECE_KING[PIECE_NUM];
-extern const int PIECE_ROOK_QUEEN[PIECE_NUM];
-extern const int PIECE_BISHOP_QUEEN[PIECE_NUM];
 
 
 /* ==========================================================================
