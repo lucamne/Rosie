@@ -34,7 +34,7 @@ enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE
 enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
 enum { WHITE, BLACK, BOTH };
 // Castling permissions will be stored in a 4 bit int with each bit representing a castling permission
-enum { WKCA = 0b0001, WQCA = 0b0010, BKCA = 0b0100, BQCA = 0b1000 };
+enum { WKCA = 1u, WQCA = 2u, BKCA = 4u, BQCA = 8u };
 
 enum {
 	NO_SQ = -1,
@@ -108,7 +108,7 @@ typedef struct {
 	int historyPly;
 
 	// bitwise and of castling rights
-	unsigned char castlePerm;
+	unsigned int castlePerm;
 	U64 positionKey;
 	
 	// How many pieces of each type are on the board

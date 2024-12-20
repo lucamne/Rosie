@@ -1,16 +1,18 @@
 #include "defs.h"
+#include <stdio.h>
 
 // direction pieces can move from to attack square
-const int KN_DIR[8] = {-8, -19, -21, -12, 8, 19, 21, 12};
-const int RK_DIR[4] = {-1, -10, 1, 10}; 
-const int BI_DIR[4] = {-9, -11, 11, 9}; 
-const int KI_DIR[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
+static const int KN_DIR[8] = {-8, -19, -21, -12, 8, 19, 21, 12};
+static const int RK_DIR[4] = {-1, -10, 1, 10}; 
+static const int BI_DIR[4] = {-9, -11, 11, 9}; 
+static const int KI_DIR[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 
 bool sq_attacked(const int sq120, const int attacking_side, const BoardState* state) {
 
 	assert(sq_on_board(sq120));
 	assert(side_valid(attacking_side));
 	assert(check_board(state));
+
 
 	// check pawn attacks
 	if (attacking_side == WHITE) {
@@ -19,6 +21,7 @@ bool sq_attacked(const int sq120, const int attacking_side, const BoardState* st
 		}
 
 	} else {
+
 		if (state->pieces[sq120 + 11] == bP || state->pieces[sq120 + 9] == bP) {
 			return true;
 		}

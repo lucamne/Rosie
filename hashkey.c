@@ -43,7 +43,7 @@ U64 generate_position_key(const BoardState const *state) {
 		key ^= pieceKeys[EMPTY][state->enPassantSquare];
 	}
 
-	assert(state->castlePerm >= 0 && state->castlePerm <= 15);
+	assert(state->castlePerm <= 15u);
 	key ^= castleKeys[state->castlePerm];
 
 	return key;

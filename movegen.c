@@ -193,6 +193,24 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 						list);
 			}
 		}
+		// white castle kingside
+		if (state->castlePerm & WKCA) {
+			if (state->pieces[F1] == EMPTY && state->pieces[G1] == EMPTY) {
+				// G1 will be checked later for attacks
+				if(!sq_attacked(E1, BLACK, state) && !sq_attacked(F1, BLACK, state)) {
+					add_quiet_move(state, build_move(E1, G1, EMPTY, EMPTY, F_CASTLE), list);
+				}
+			}
+		}
+		// white queenside castle
+		if (state->castlePerm & WQCA) {
+			if (state->pieces[D1] == EMPTY && state->pieces[C1] == EMPTY && state->pieces[B1] == EMPTY) {
+				// C1 will be checked later for attacks
+				if(!sq_attacked(E1, BLACK, state) && !sq_attacked(D1, BLACK, state)) {
+					add_quiet_move(state, build_move(E1, C1, EMPTY, EMPTY, F_CASTLE), list);
+				}
+			}
+		}
 	} else {
 		for (int pieceCount = 0; pieceCount < state->pieceCounts[bP]; pieceCount++) {
 			const int sq120 = state->pieceList[bP][pieceCount];
@@ -242,7 +260,24 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 						list);
 			}
 		}
-
+		// black castle kingside
+		if (state->castlePerm & BKCA) {
+			if (state->pieces[F8] == EMPTY && state->pieces[G8] == EMPTY) {
+				// G8 will be checked later for attacks
+				if(!sq_attacked(E8, WHITE, state) && !sq_attacked(F8, WHITE, state)) {
+					add_quiet_move(state, build_move(E8, G8, EMPTY, EMPTY, F_CASTLE), list);
+				}
+			}
+		}
+		// black queenside castle
+		if (state->castlePerm & BQCA) {
+			if (state->pieces[D8] == EMPTY && state->pieces[C8] == EMPTY && state->pieces[B8] == EMPTY) {
+				// C8 will be checked later for attacks
+				if(!sq_attacked(E8, WHITE, state) && !sq_attacked(D8, WHITE, state)) {
+					add_quiet_move(state, build_move(E8, C8, EMPTY, EMPTY, F_CASTLE), list);
+				}
+			}
+		}
 	}
 
 	// loop for slide pieces
@@ -250,12 +285,10 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 	int piece = LOOP_SLIDE_PIECE[pieceIndex++];
 	while (piece != 0) {
 		assert(piece_valid_empty(piece));
-		printf("sliders pieceIndex: %d piece: %d\n", pieceIndex, piece);
 
 		for (int pieceCount = 0; pieceCount < state->pieceCounts[piece]; pieceCount++) {
 			const int sq120 = state->pieceList[piece][pieceCount];
 			assert(!sq_offboard(sq120));
-			printf("Piece: %c on %s\n", PIECE_CHAR[piece], print_sq(sq120));
 
 			for (int i = 0; i < NUM_DIRECTIONS[piece]; i++) {
 				
@@ -265,11 +298,19 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 				while (!sq_offboard(targetSq)) {
 					if (state->pieces[targetSq] != EMPTY) {
 						if (PIECE_COLOR[state->pieces[targetSq]] == side ^ 1) {
-							printf("\t\tCapture on %s\n", print_sq(targetSq));
+							add_capture_move(
+									state,
+									build_move(
+										sq120,
+										targetSq,
+										state->pieces[targetSq],
+										EMPTY,
+										0), 
+									list);
 						}
 						break;
 					}
-					printf("\t\tNormal on %s\n", print_sq(targetSq));
+					add_quiet_move(state, build_move(sq120, targetSq, EMPTY, EMPTY, 0), list);
 					targetSq += dir;
 				}
 			}
@@ -282,12 +323,10 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 	piece = LOOP_NON_SLIDE_PIECE[pieceIndex++];
 	while (piece != 0) {
 		assert(piece_valid_empty(piece));
-		printf("non-sliders pieceIndex: %d piece: %d\n", pieceIndex, piece);
 
 		for (int pieceCount = 0; pieceCount < state->pieceCounts[piece]; pieceCount++) {
 			const int sq120 = state->pieceList[piece][pieceCount];
 			assert(!sq_offboard(sq120));
-			printf("Piece: %c on %s\n", PIECE_CHAR[piece], print_sq(sq120));
 
 			for (int i = 0; i < NUM_DIRECTIONS[piece]; i++) {
 				const int dir = PIECE_DIRECTIONS[piece][i];
@@ -297,11 +336,19 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 
 				if (state->pieces[targetSq] != EMPTY) {
 					if (PIECE_COLOR[state->pieces[targetSq]] == side ^ 1) {
-						printf("\t\tCapture on %s\n", print_sq(targetSq));
+						add_capture_move(
+							state,
+							build_move(
+								sq120,
+								targetSq,
+								state->pieces[targetSq],
+								EMPTY,
+								0),
+							list);
 					}
 					continue;
 				}
-				printf("\t\tNormal on %s\n", print_sq(targetSq));
+				add_quiet_move(state, build_move(sq120, targetSq, EMPTY, EMPTY, 0), list);
 			}
 		}
 

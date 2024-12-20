@@ -104,7 +104,7 @@ int parse_fen(char* fen, BoardState* state) {
 	}
 	fen++;
 
-	assert(state->castlePerm >= 0 && state->castlePerm <= 15);
+	assert(state->castlePerm <= 15);
 	assert(*fen != ' ');
 
 	if (*fen != '-') {
@@ -185,7 +185,7 @@ int print_board(const BoardState* state) {
 			state->castlePerm & WKCA ? 'K' : '-',
 			state->castlePerm & WQCA ? 'Q' : '-',
 			state->castlePerm & BKCA ? 'k' : '-',
-			state->castlePerm & WQCA ? 'q' : '-' );
+			state->castlePerm & BQCA ? 'q' : '-' );
 
 	printf("Position Key:%lX\n", state->positionKey);
 
