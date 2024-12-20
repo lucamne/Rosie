@@ -26,14 +26,14 @@ static const int PIECE_DIRECTIONS[PIECE_NUM][8] = {
 };
 static const int NUM_DIRECTIONS[PIECE_NUM] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
 
-static inline unsigned int build_move(unsigned int from, unsigned int to, unsigned int capture, 
+static unsigned int build_move(unsigned int from, unsigned int to, unsigned int capture, 
 				      unsigned int promote, unsigned int flags) {
 	return from | (to << 7) | (capture << 14) | (promote << 18) | flags;
 }
 
-static inline bool sq_offboard(const int sq120) {return SQ_TO_FILE[sq120] == FILE_NONE;}
+static bool sq_offboard(const int sq120) {return SQ_TO_FILE[sq120] == FILE_NONE;}
 
-int add_quiet_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_quiet_move(const BoardState* state, unsigned int move, MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -42,7 +42,7 @@ int add_quiet_move(const BoardState* state, unsigned int move, MoveList* list) {
 	return 0;
 }
 
-int add_capture_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_capture_move(const BoardState* state, unsigned int move, MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -51,7 +51,7 @@ int add_capture_move(const BoardState* state, unsigned int move, MoveList* list)
 	return 0;
 }
 
-int add_en_passant_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_en_passant_move(const BoardState* state, unsigned int move, MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -61,7 +61,7 @@ int add_en_passant_move(const BoardState* state, unsigned int move, MoveList* li
 }
 
 // in between function to handle pawn promotions
-int add_wP_cap_move(const BoardState* state, const unsigned int from,
+static int add_wP_cap_move(const BoardState* state, const unsigned int from,
 			const unsigned int to, const unsigned int capture,
 			MoveList* list) {
 
@@ -80,7 +80,7 @@ int add_wP_cap_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 
-int add_wP_move(const BoardState* state, const unsigned int from,
+static int add_wP_move(const BoardState* state, const unsigned int from,
 			const unsigned int to,
 			MoveList* list) {
 
@@ -98,7 +98,7 @@ int add_wP_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 // in between function to handle pawn promotions
-int add_bP_cap_move(const BoardState* state, const unsigned int from,
+static int add_bP_cap_move(const BoardState* state, const unsigned int from,
 			const unsigned int to, const unsigned int capture,
 			MoveList* list) {
 
@@ -117,7 +117,7 @@ int add_bP_cap_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 
-int add_bP_move(const BoardState* state, const unsigned int from,
+static int add_bP_move(const BoardState* state, const unsigned int from,
 			const unsigned int to,
 			MoveList* list) {
 
@@ -172,25 +172,27 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 					add_wP_cap_move(state, sq120, sq120 + 11, state->pieces[sq120 + 11], list);
 			}
 			// handle en passant captures
-			if (sq120 + 9 == state->enPassantSquare) {
-				add_capture_move(
-						state, 
-						build_move(
-							sq120, 
-							sq120 + 9, 
-							EMPTY, EMPTY, 
-							F_EP_CAPTURE),
-						list);
-			}
-			if (sq120 + 11 == state->enPassantSquare) {
-				add_capture_move(
-						state, 
-						build_move(
-							sq120, 
-							sq120 + 11, 
-							EMPTY, EMPTY, 
-							F_EP_CAPTURE),
-						list);
+			if (state->enPassantSquare != NO_SQ) {
+				if (sq120 + 9 == state->enPassantSquare) {
+					add_en_passant_move(
+							state, 
+							build_move(
+								sq120, 
+								sq120 + 9, 
+								EMPTY, EMPTY, 
+								F_EP_CAPTURE),
+							list);
+				}
+				if (sq120 + 11 == state->enPassantSquare) {
+					add_en_passant_move(
+							state, 
+							build_move(
+								sq120, 
+								sq120 + 11, 
+								EMPTY, EMPTY, 
+								F_EP_CAPTURE),
+							list);
+				}
 			}
 		}
 		// white castle kingside
@@ -239,25 +241,27 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 					add_bP_cap_move(state, sq120, sq120 - 11, state->pieces[sq120 - 11], list);
 			}
 			// handle en passant captures
-			if (sq120 - 9 == state->enPassantSquare) {
-				add_capture_move(
-						state, 
-						build_move(
-							sq120, 
-							sq120 - 9, 
-							EMPTY, EMPTY, 
-							F_EP_CAPTURE),
-						list);
-			}
-			if (sq120 - 11 == state->enPassantSquare) {
-				add_capture_move(
-						state, 
-						build_move(
-							sq120, 
-							sq120 - 11, 
-							EMPTY, EMPTY, 
-							F_EP_CAPTURE),
-						list);
+			if (state->enPassantSquare != NO_SQ) {
+				if (sq120 - 9 == state->enPassantSquare) {
+					add_en_passant_move(
+							state, 
+							build_move(
+								sq120, 
+								sq120 - 9, 
+								EMPTY, EMPTY, 
+								F_EP_CAPTURE),
+							list);
+				}
+				if (sq120 - 11 == state->enPassantSquare) {
+					add_en_passant_move(
+							state, 
+							build_move(
+								sq120, 
+								sq120 - 11, 
+								EMPTY, EMPTY, 
+								F_EP_CAPTURE),
+							list);
+				}
 			}
 		}
 		// black castle kingside

@@ -133,12 +133,15 @@ int reset_board(BoardState *state) {
 			state->pieces[sq] = EMPTY;
 	}
 	// reset piece group counts and pawn bitboards
-	for (int c = WHITE; c <= BOTH; c++) {
+	for (int c = WHITE; c < BOTH; c++) {
 		state->bigPieceCounts[c] = 0;
 		state->majorPieceCounts[c] = 0;
 		state->minorPieceCounts[c] = 0;
 		state->materialScores[c] = 0;
-		// pawn bitboard reset
+	}
+
+	// pawn bitboard reset
+	for (int c = WHITE; c <= BOTH; c++) {
 		state->pawns[c] = 0ULL;
 	}
 	// reset piece counts by type
