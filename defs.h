@@ -6,7 +6,6 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 #define NAME "Rosie 1.0"
 
@@ -256,5 +255,7 @@ void take_move(BoardState* state);
  * PERFT: perft.c
  * ========================================================================== */
 
+/*FUNCTIONS*/
+void perftTest(const int depth, BoardState* state);
 
 #endif

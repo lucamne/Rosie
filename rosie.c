@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define PERFTFEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPP/R3K2R w"
 
 int main()
 {
@@ -12,25 +13,7 @@ int main()
 	MoveList* list = malloc(sizeof(MoveList));
 
 	parse_fen(STARTING_FEN, state);
-	generate_all_moves(state, list);
-
-	print_board(state);
-	getchar();
-
-	for (int moveNum = 0; moveNum < list->count; moveNum++) {
-		const int move = list->moves[moveNum].move;
-
-		// if move is legal we skip past it
-		if (!make_move(state, move)) { continue; } 
-		printf("\nMADE: %s\n", print_move(move));
-		print_board(state);
-
-		take_move(state);
-		printf("\nTAKEN: %s\n", print_move(move));
-		print_board(state);
-		
-		getchar();
-	}
+	perftTest(3, state);
 
 	free(list);
 	free(state);

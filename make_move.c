@@ -74,12 +74,11 @@ static void clear_piece(const int sq120, BoardState* state) {
 		}
 	}
 	assert(piece_found);
-	assert(check_board(state));
 }
 
 static void add_piece(const int sq120, BoardState* state, const int piece) {
 	assert(piece_valid_empty(piece));
-	assert(sq_on_board(piece));
+	assert(sq_on_board(sq120));
 
 	hash_piece(state, piece, sq120);
 
@@ -98,9 +97,7 @@ static void add_piece(const int sq120, BoardState* state, const int piece) {
 		set_bit(&state->pawns[BOTH], SQ_120_TO_64[sq120]);
 	}
 	state->materialScores[color] += PIECE_VAL[piece];
-	state->pieceList[piece][state->pieceCounts[piece]++] == sq120;
-
-	assert(check_board(state));
+	state->pieceList[piece][state->pieceCounts[piece]++] = sq120;
 }
 
 static void move_piece (const int from, const int to, BoardState* state) {
@@ -137,7 +134,6 @@ static void move_piece (const int from, const int to, BoardState* state) {
 		}
 	}
 	assert(piece_found);
-	assert(check_board(state));
 }
 
 // return true if move is legal (does not leave king in check) and false otherwise
@@ -259,7 +255,7 @@ void take_move(BoardState* state) {
 	state->historyPly--;
 	state->ply--;
 
-	const int move = state->history[state->historyPly].move;
+	const U32 move = state->history[state->historyPly].move;
 	const int from = get_from_sq(move);
 	const int to = get_to_sq(move);
 
