@@ -1,9 +1,9 @@
 #include "defs.h"
 #include <stdlib.h>
 
-U64 pieceKeys[PIECE_NUM][BRD_SQ_NUM];
-U64 sideKey;
-U64 castleKeys[16];
+U64 PIECE_KEYS[PIECE_NUM][BRD_SQ_NUM];
+U64 SIDE_KEY;
+U64 CASTLE_KEYS[16];
 
 U64 random64(void) {
 	return ((U64) random()) | (((U64) random()) << 31) | (((U64) random()) << 62);
@@ -12,12 +12,12 @@ U64 random64(void) {
 int init_hashkeys(void) {
 	for (int p = EMPTY; p <= bK; p++){ 
 		for (int s = 0; s < BRD_SQ_NUM; s++) {
-			pieceKeys[p][s] = random64();
+			PIECE_KEYS[p][s] = random64();
 		}
 	}
-	sideKey = random64();
+	SIDE_KEY = random64();
 	for (int i = 0; i < 16; i++) {
-		castleKeys[i] = random64();
+		CASTLE_KEYS[i] = random64();
 	}
 }
 
@@ -29,22 +29,22 @@ U64 generate_position_key(const BoardState const *state) {
 		if(piece != EMPTY && piece != OFFBOARD)
 		{
 			assert(piece >= wP && piece <= bK);
-			key ^= pieceKeys[piece][sq];
+			key ^= PIECE_KEYS[piece][sq];
 		}
 	}
 
 	if (state->sideToMove == WHITE) {
-		key ^= sideKey;
+		key ^= SIDE_KEY;
 	}
 
 	if (state->enPassantSquare != NO_SQ)
 	{
 		assert(state->enPassantSquare >= A1 && state->enPassantSquare <= H8);
-		key ^= pieceKeys[EMPTY][state->enPassantSquare];
+		key ^= PIECE_KEYS[EMPTY][state->enPassantSquare];
 	}
 
 	assert(state->castlePerm <= 15u);
-	key ^= castleKeys[state->castlePerm];
+	key ^= CASTLE_KEYS[state->castlePerm];
 
 	return key;
 }

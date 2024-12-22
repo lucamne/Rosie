@@ -1,5 +1,5 @@
-#ifndef GLOBAL_DEFS_H
-#define GLOBAL_DEFS_H
+#ifndef DEFS_H
+#define DEFS_H
 
 // uncomment this line to turn off assertion checks
 //#define NDEBUG
@@ -28,7 +28,8 @@
 #define MAX_GAME_MOVES 2048
 #define MAX_POSITION_MOVES 256
 
-typedef  uint64_t U64;
+typedef uint64_t U64;
+typedef uint32_t U32;
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK, OFFBOARD };
 enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE };
 enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
@@ -62,20 +63,20 @@ enum {
  * */
 
 // move accessors
-static inline int get_from_sq(unsigned int move) { return move & 0x7F; }
-static inline int get_to_sq(unsigned int move) { return (move >> 7) & 0x7F; }
-static inline int get_captured_piece(unsigned int move) { return (move >> 14) & 0xF; }
-static inline int get_promotion(unsigned int move) { return (move >> 18) & 0xF; }
+static inline int get_from_sq(U32 move) { return move & 0x7Fu; }
+static inline int get_to_sq(U32 move) { return (move >> 7) & 0x7Fu; }
+static inline int get_captured_piece(U32 move) { return (move >> 14) & 0xFu; }
+static inline int get_promotion(U32 move) { return (move >> 18) & 0xFu; }
 // move flags
-static const int F_EP_CAPTURE = 0x400000;
-static const int F_PAWN_START = 0x800000;
-static const int F_CASTLE = 0x1000000;
-static const int F_CAPTURE = 0x43C000;
-static const int F_PROMOTION = 0x3C0000;
+static const U32 F_EP_CAPTURE = 0x400000u;
+static const U32 F_PAWN_START = 0x800000u;
+static const U32 F_CASTLE = 0x1000000u;
+static const U32 F_CAPTURE = 0x43C000u;
+static const U32 F_PROMOTION = 0x3C0000u;
 
 /***STRUCTS***/
 typedef struct {
-	unsigned int move;
+	U32 move;
 	int score;
 } Move;
 
@@ -86,7 +87,7 @@ typedef struct {
 
 // Stores a past board state
 typedef struct {
-	int move;
+	U32 move;
 	unsigned char castlePerm;
 	int enPassantSquare;
 	int fiftyMoveCounter;
@@ -104,8 +105,6 @@ typedef struct {
 	int fiftyMoveCounter;
 	// current search ply
 	int ply;
-	// total game ply
-	int historyPly;
 
 	// bitwise and of castling rights
 	unsigned int castlePerm;
@@ -123,6 +122,8 @@ typedef struct {
 	// 1st dimension is piece type and second dimension is instance of said piece type
 	int pieceList[PIECE_NUM][10];		
 
+	// total game ply
+	int historyPly;
 	PastState history[MAX_GAME_MOVES];
 } BoardState;
 
@@ -178,9 +179,9 @@ int init_hashkeys(void);
 U64 generate_position_key(const BoardState const *state);
 
 /***GLOBALS***/
-extern U64 pieceKeys[PIECE_NUM][BRD_SQ_NUM];
-extern U64 sideKey;
-extern U64 castleKeys[16];
+extern U64 PIECE_KEYS[PIECE_NUM][BRD_SQ_NUM];
+extern U64 SIDE_KEY;
+extern U64 CASTLE_KEYS[16];
 
 
 /* ==========================================================================
@@ -199,10 +200,13 @@ extern const int PIECE_COLOR[PIECE_NUM];
 extern const bool PIECE_BIG[PIECE_NUM];
 extern const bool PIECE_MAJOR[PIECE_NUM];
 extern const bool PIECE_MINOR[PIECE_NUM];
+
+extern const bool PIECE_PAWN[PIECE_NUM];
 extern const bool PIECE_KNIGHT[PIECE_NUM];
 extern const bool PIECE_KING[PIECE_NUM];
 extern const bool PIECE_ROOK_QUEEN[PIECE_NUM];
 extern const bool PIECE_BISHOP_QUEEN[PIECE_NUM];
+
 extern const bool PIECE_SLIDES[PIECE_NUM];
 
 extern const int SQ_TO_FILE[BRD_SQ_NUM];
@@ -242,4 +246,13 @@ bool piece_valid_empty(const int p);
 
 /***FUNTIONS***/
 int generate_all_moves(const BoardState* state, MoveList* list);
+
+/* ==========================================================================
+ * MAKE_MOVE: make_move.c
+ * ========================================================================== */
+
+/*FUNCTIONS*/
+bool make_move(BoardState* state, const U32 move);
+void take_move(BoardState* state);
+
 #endif

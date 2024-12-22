@@ -46,5 +46,6 @@ const bool PIECE_KNIGHT[PIECE_NUM] = {0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
 const bool PIECE_KING[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
 const bool PIECE_ROOK_QUEEN[PIECE_NUM] = {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0};
 const bool PIECE_BISHOP_QUEEN[PIECE_NUM] = {0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0};
+const bool PIECE_PAWN[PIECE_NUM] = {0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 
 const bool PIECE_SLIDES[PIECE_NUM] = {0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0};
