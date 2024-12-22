@@ -74,6 +74,7 @@ static void clear_piece(const int sq120, BoardState* state) {
 		}
 	}
 	assert(piece_found);
+	assert(check_board(state));
 }
 
 static void add_piece(const int sq120, BoardState* state, const int piece) {
@@ -98,6 +99,8 @@ static void add_piece(const int sq120, BoardState* state, const int piece) {
 	}
 	state->materialScores[color] += PIECE_VAL[piece];
 	state->pieceList[piece][state->pieceCounts[piece]++] == sq120;
+
+	assert(check_board(state));
 }
 
 static void move_piece (const int from, const int to, BoardState* state) {
@@ -129,11 +132,12 @@ static void move_piece (const int from, const int to, BoardState* state) {
 #ifndef NDEBUG
 			piece_found = true;
 #endif
-			state->pieceList[piece][i] == to;
+			state->pieceList[piece][i] = to;
 			break;
 		}
 	}
 	assert(piece_found);
+	assert(check_board(state));
 }
 
 // return true if move is legal (does not leave king in check) and false otherwise
@@ -190,7 +194,7 @@ bool make_move(BoardState* state, const U32 move) {
 	/* Handle piece moves */
 	move_piece(from, to, state);
 	// pawn start case	
-	if (PIECE_PAWN[state->pieces[from]]) {
+	if (PIECE_PAWN[state->pieces[to]]) {
 		state->fiftyMoveCounter = 0;
 		if (move & F_PAWN_START) {
 			if (sideToMove == WHITE) {
