@@ -248,4 +248,80 @@ bool make_move(BoardState* state, const U32 move) {
 	return true;
 }
 
-void take_move(BoardState* state) {}
+void take_move(BoardState* state) {
+
+	assert(check_board);
+
+	state->historyPly--;
+	state->ply--;
+
+	const int move = state->history[state->historyPly].move;
+	const int from = get_from_sq(move);
+	const int to = get_to_sq(move);
+
+	assert(sq_on_board(from));
+	assert(sq_on_board(to));
+
+	if (state->enPassantSquare != NO_SQ) { hash_ep(state); }
+	hash_castle(state);
+
+	state->castlePerm = state->history[state->historyPly].castlePerm;
+	state->fiftyMoveCounter = state->history[state->historyPly].fiftyMoveCounter;
+	state->enPassantSquare = state->history[state->historyPly].enPassantSquare;
+
+	if (state->enPassantSquare != NO_SQ) { hash_ep(state); }
+	hash_castle(state);
+
+	state->sideToMove ^= 1;
+	hash_side(state);
+
+	if (F_EP_CAPTURE & move) {
+		if (state->sideToMove == WHITE) {
+			add_piece(to - 10, state, bP);
+		} else {
+			add_piece(to + 10, state, wP);
+		}
+	}
+	// reverse castle
+	else if (F_CASTLE & move) {
+		switch (to) {
+			case C1:
+				move_piece(D1, A1, state);
+				break;
+			case C8:
+				move_piece(D8, A8, state);
+				break;
+			case G1:
+				move_piece(F1, H1, state);
+				break;
+			case G8:
+				move_piece(F8, H8, state);
+				break;
+			default:
+				assert(false);
+		}
+	}
+
+	// must move piece before adding back captured piece or the capturing piece will be replaced
+	move_piece(to, from, state);
+
+	if (PIECE_KING[state->pieces[from]]) {
+		state->kingSquare[state->sideToMove] = from;
+	}
+
+	const int captured = get_captured_piece(move);
+	if (captured != EMPTY) {
+		assert(piece_valid_empty(captured));
+		add_piece(to, state, captured);
+	}
+
+	// need to replace promoted piece with a pawn
+	const int promotedPiece = get_promotion(move);
+	if (promotedPiece != EMPTY) {
+		assert(piece_valid_empty(promotedPiece) && !PIECE_PAWN[promotedPiece]);
+		clear_piece(from, state);
+		add_piece(from, state, PIECE_COLOR[promotedPiece] == WHITE ? wP : bP);
+	}
+	
+	assert(check_board(state));
+}
