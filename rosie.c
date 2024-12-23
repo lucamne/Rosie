@@ -10,12 +10,9 @@ int main()
 	init();
 	
 	BoardState* state = malloc(sizeof(BoardState));
-	MoveList* list = malloc(sizeof(MoveList));
 
-	parse_fen(PERFTFEN, state);
-	perftTest(4, state);
+	full_perft_test(state, PERFT_FILE, false);
 
-	free(list);
 	free(state);
 	return 0;
 }

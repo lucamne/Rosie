@@ -10,6 +10,7 @@
 #define NAME "Rosie 1.0"
 
 #define STARTING_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+#define PERFT_FILE "testing_resources/perft_data.txt"
 
 /* ==========================================================================
  * TYPES
@@ -256,6 +257,8 @@ void take_move(BoardState* state);
  * ========================================================================== */
 
 /*FUNCTIONS*/
-void perftTest(const int depth, BoardState* state);
+// void perftTest(const int depth, BoardState* state);
+long perft(BoardState* state, int depth, bool show_output);
+void full_perft_test(BoardState* state, char* perft_file, bool verbose);
 
 #endif
