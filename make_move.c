@@ -17,19 +17,19 @@ static const int CASTLE_PERM_UPDATE[BRD_SQ_NUM] = {
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 };
 
-static void hash_piece(BoardState* state, int piece, int sq120) {
+static inline void hash_piece(BoardState* state, int piece, int sq120) {
 	state->positionKey ^= PIECE_KEYS[piece][sq120];
 }
 
-static void hash_castle(BoardState* state) {
+static inline void hash_castle(BoardState* state) {
 	state->positionKey ^= CASTLE_KEYS[state->castlePerm];
 }
 
-static void hash_side(BoardState* state) {
+static inline void hash_side(BoardState* state) {
 	state->positionKey ^= SIDE_KEY;
 }
 
-static void hash_ep(BoardState* state) {
+static inline void hash_ep(BoardState* state) {
 	state->positionKey ^= PIECE_KEYS[EMPTY][state->enPassantSquare];
 }	
 
@@ -49,9 +49,9 @@ static void clear_piece(const int sq120, BoardState* state) {
 	if (PIECE_BIG[piece]) {
 		state->bigPieceCounts[color]--;
 		if (PIECE_MINOR[piece]) {
-			state->majorPieceCounts[color]--;
-		} else {
 			state->minorPieceCounts[color]--;
+		} else {
+			state->majorPieceCounts[color]--;
 		}
 	// otherwise piece is a pawn
 	} else {

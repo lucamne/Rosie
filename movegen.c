@@ -141,9 +141,6 @@ int generate_all_moves(const BoardState* state, MoveList* list) {
 	
 	const int side = state->sideToMove;
 	list->count = 0;
-
-	printf("\nSide to move: %d\n", side);
-
 	if (side == WHITE) {
 		for (int pieceCount = 0; pieceCount < state->pieceCounts[wP]; pieceCount++) {
 			const int sq120 = state->pieceList[wP][pieceCount];

@@ -1,8 +1,8 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-// uncomment this line to turn off assertion checks
-//#define NDEBUG
+// define NDEBUG to turn off costly assertion checks
+// #define NDEBUG
 #include <assert.h>
 #include <stdint.h>
 #include <stdbool.h>
