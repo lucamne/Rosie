@@ -2,7 +2,7 @@
 #define DEFS_H
 
 // define NDEBUG to turn off costly assertion checks
-// #define NDEBUG
+#define NDEBUG
 #include <assert.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -259,6 +259,6 @@ void take_move(BoardState* state);
 /*FUNCTIONS*/
 // void perftTest(const int depth, BoardState* state);
 long perft(BoardState* state, int depth, bool show_output);
-void full_perft_test(BoardState* state, char* perft_file, bool verbose);
+void perft_from_file(BoardState* state, char* perft_file, bool verbose);
 
 #endif
