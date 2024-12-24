@@ -29,7 +29,7 @@ bool sq_attacked(const int sq120, const int attacking_side, const BoardState* st
 	// check knight attacks
 	for (int i = 0; i < 8; i++) {
 		const int piece = state->pieces[sq120 + KN_DIR[i]];
-		if (PIECE_KNIGHT[piece] && PIECE_COLOR[piece] == attacking_side) {
+		if (piece != OFFBOARD && PIECE_KNIGHT[piece] && PIECE_COLOR[piece] == attacking_side) {
 			return true;
 		}
 	}
@@ -72,7 +72,7 @@ bool sq_attacked(const int sq120, const int attacking_side, const BoardState* st
 	// check king attacks
 	for (int i = 0; i < 8; i++) {
 		const int piece = state->pieces[sq120 + KI_DIR[i]];
-		if (PIECE_KING[piece] && PIECE_COLOR[piece] == attacking_side) {
+		if (piece != OFFBOARD && PIECE_KING[piece] && PIECE_COLOR[piece] == attacking_side) {
 			return true;
 		}
 	}

@@ -98,11 +98,6 @@ void perft_from_file(BoardState* state, char* perft_file, bool verbose) {
 		fen = strcat(fen, " ");
 		fen = strcat(fen, fullMoves);
 
-		printf("%d. Depth: %d Expected Nodes: %ld\n", ++testCounter, depth, leafNodes);
-
-		parse_fen(fen, state);
-
-		free(fen);
 		free(side);
 		free(fullMoves);
 		free(fiftyMove);
@@ -110,7 +105,17 @@ void perft_from_file(BoardState* state, char* perft_file, bool verbose) {
 		free(castle);
 		free(ep);
 
-		const long nodesFound = perft(state, depth, verbose);
+		// # is used to comment out lines in perft test file
+		if (*fen == '#') {
+			free(fen);
+			continue;
+		}
+
+		printf("%d. Depth: %d Expected Nodes: %ld\n", ++testCounter, depth, leafNodes);
+
+		parse_fen(fen, state);
+		free(fen);
+				const long nodesFound = perft(state, depth, verbose);
 		if (nodesFound == leafNodes) {
 			printf("\tSuccess!\n");
 		} else {

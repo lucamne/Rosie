@@ -2,7 +2,7 @@
 #define DEFS_H
 
 // define NDEBUG to turn off costly assertion checks
-#define NDEBUG
+// #define NDEBUG
 #include <assert.h>
 #include <stdint.h>
 #include <stdbool.h>

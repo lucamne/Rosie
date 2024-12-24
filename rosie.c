@@ -11,7 +11,7 @@ int main()
 	
 	BoardState* state = malloc(sizeof(BoardState));
 
-	perft_from_file(state, PERFT_FILE, false);
+	perft_from_file(state, PERFT_FILE, true);
 
 	free(state);
 	return 0;
