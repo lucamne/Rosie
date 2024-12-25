@@ -24,6 +24,7 @@
 #define COLOR_NUM 3
 #define MAX_GAME_MOVES 2048
 #define MAX_POSITION_MOVES 256
+#define NO_MOVE 0
 
 typedef uint64_t U64;
 typedef uint32_t U32;
@@ -226,6 +227,7 @@ bool sq_attacked(const int sq120, const int side, const BoardState* state);
 char* print_sq(const int sq120);
 char* print_move(const unsigned int move);
 int print_move_list(const MoveList* list);
+int parse_move(char* ptrChar, BoardState* state);
 
 /* ==========================================================================
  * VALIDATE: validate.c
@@ -260,5 +262,12 @@ void take_move(BoardState* state);
 // void perftTest(const int depth, BoardState* state);
 long perft(BoardState* state, int depth, bool show_output);
 void perft_from_file(BoardState* state, char* perft_file, bool verbose);
+
+/* ==========================================================================
+ * SEARCH: search.c
+ * ========================================================================== */
+
+/*FUNCTIONS*/
+void search_position(BoardState* state);
 
 #endif
