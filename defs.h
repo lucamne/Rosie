@@ -270,4 +270,10 @@ void perft_from_file(BoardState* state, char* perft_file, bool verbose);
 /*FUNCTIONS*/
 void search_position(BoardState* state);
 
+/* ==========================================================================
+ * MISC: misc.c
+ * ========================================================================== */
+
+/*FUNCTIONS*/
+long get_time_ms(void);
 #endif
