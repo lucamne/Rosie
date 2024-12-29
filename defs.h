@@ -73,6 +73,16 @@ static const U32 F_CAPTURE = 0x43C000u;
 static const U32 F_PROMOTION = 0x3C0000u;
 
 /***STRUCTS***/
+struct PvEntry {
+	U64 posKey;
+	U32 move;
+};
+
+struct PvTable {
+	struct PvEntry* pTable;
+	int numEntries;
+};
+
 struct Move {
 	U32 move;
 	int score;
@@ -122,6 +132,8 @@ struct BoardState{
 	// total game ply
 	int historyPly;
 	struct PastState history[MAX_GAME_MOVES];
+
+	struct PvTable pvTable[1];
 };
 
 
@@ -275,4 +287,11 @@ void search_position(struct BoardState* state);
 
 /*FUNCTIONS*/
 long get_time_ms(void);
+
+/* ==========================================================================
+ * PVTABLE: pvtable.c
+ * ========================================================================== */
+
+/*FUNTIONS*/
+void init_pv_table(struct PvTable* table);
 #endif
