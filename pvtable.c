@@ -1,4 +1,5 @@
 #include "defs.h"
+#include <stdlib.h>
 #include <stdio.h>
 
 // we want our pv table to be max 2 mb
