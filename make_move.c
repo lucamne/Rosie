@@ -17,23 +17,23 @@ static const int CASTLE_PERM_UPDATE[BRD_SQ_NUM] = {
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 };
 
-static inline void hash_piece(BoardState* state, int piece, int sq120) {
+static inline void hash_piece(struct BoardState* state, int piece, int sq120) {
 	state->positionKey ^= PIECE_KEYS[piece][sq120];
 }
 
-static inline void hash_castle(BoardState* state) {
+static inline void hash_castle(struct BoardState* state) {
 	state->positionKey ^= CASTLE_KEYS[state->castlePerm];
 }
 
-static inline void hash_side(BoardState* state) {
+static inline void hash_side(struct BoardState* state) {
 	state->positionKey ^= SIDE_KEY;
 }
 
-static inline void hash_ep(BoardState* state) {
+static inline void hash_ep(struct BoardState* state) {
 	state->positionKey ^= PIECE_KEYS[EMPTY][state->enPassantSquare];
 }	
 
-static void clear_piece(const int sq120, BoardState* state) {
+static void clear_piece(const int sq120, struct BoardState* state) {
 
 	assert(sq_on_board(sq120));
 	const int piece = state->pieces[sq120];
@@ -76,7 +76,7 @@ static void clear_piece(const int sq120, BoardState* state) {
 	assert(piece_found);
 }
 
-static void add_piece(const int sq120, BoardState* state, const int piece) {
+static void add_piece(const int sq120, struct BoardState* state, const int piece) {
 	assert(piece_valid_empty(piece));
 	assert(sq_on_board(sq120));
 
@@ -100,7 +100,7 @@ static void add_piece(const int sq120, BoardState* state, const int piece) {
 	state->pieceList[piece][state->pieceCounts[piece]++] = sq120;
 }
 
-static void move_piece (const int from, const int to, BoardState* state) {
+static void move_piece (const int from, const int to, struct BoardState* state) {
 	assert(sq_on_board(from));
 	assert(sq_on_board(to));
 	
@@ -137,7 +137,7 @@ static void move_piece (const int from, const int to, BoardState* state) {
 }
 
 // return true if move is legal (does not leave king in check) and false otherwise
-bool make_move(BoardState* state, const U32 move) {
+bool make_move(struct BoardState* state, const U32 move) {
 	assert(check_board(state));
 
 	const int from = get_from_sq(move);
@@ -248,7 +248,7 @@ bool make_move(BoardState* state, const U32 move) {
 	return true;
 }
 
-void take_move(BoardState* state) {
+void take_move(struct BoardState* state) {
 
 	assert(check_board);
 

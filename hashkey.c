@@ -21,7 +21,7 @@ int init_hashkeys(void) {
 	}
 }
 
-U64 generate_position_key(const BoardState const *state) {
+U64 generate_position_key(const struct BoardState const *state) {
 	U64 key = 0;
 	// pieces
 	for (int sq = 0; sq < BRD_SQ_NUM; sq++) {

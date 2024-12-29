@@ -42,7 +42,7 @@ char* print_move(const unsigned int move) {
 	return mv_str;
 }
 
-int parse_move(char* ptrChar, BoardState* state) {
+int parse_move(char* ptrChar, struct BoardState* state) {
 
 	if (ptrChar[1] > '8' || ptrChar[1] < '1') return false;
 	if (ptrChar[3] > '8' || ptrChar[3] < '1') return false;
@@ -54,7 +54,7 @@ int parse_move(char* ptrChar, BoardState* state) {
 	
 	assert(sq_on_board(from) && sq_on_board(to));
 
-	MoveList* mList = malloc(sizeof(MoveList));
+	struct MoveList* mList = malloc(sizeof(struct MoveList));
 	generate_all_moves(state, mList);
 
 	for (int moveNum = 0; moveNum < mList->count; moveNum++) {
@@ -88,7 +88,7 @@ int parse_move(char* ptrChar, BoardState* state) {
 	return NO_MOVE;
 }
 
-int print_move_list(const MoveList* list) {
+int print_move_list(const struct MoveList* list) {
 
 	printf("MoveList:\n");
 	for(int i = 0; i < list->count; i++) {

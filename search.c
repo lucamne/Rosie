@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-bool is_repetition(const BoardState* state) {
+bool is_repetition(const struct BoardState* state) {
 	// fiftyMoveCounter is reset on capture and pawn move which is garaunteed to be a new position
 	// Therefore, we can start at the last time fiftyMoveCounter was updated
 	for (int i = state->historyPly - state->fiftyMoveCounter; i < state->historyPly - 1; i++) {
@@ -13,6 +13,6 @@ bool is_repetition(const BoardState* state) {
 	return false;
 }
 
-void search_position(BoardState* state) {
+void search_position(struct BoardState* state) {
 	
 }

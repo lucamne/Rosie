@@ -7,7 +7,7 @@ static const int RK_DIR[4] = {-1, -10, 1, 10};
 static const int BI_DIR[4] = {-9, -11, 11, 9}; 
 static const int KI_DIR[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 
-bool sq_attacked(const int sq120, const int attacking_side, const BoardState* state) {
+bool sq_attacked(const int sq120, const int attacking_side, const struct BoardState* state) {
 
 	assert(sq_on_board(sq120));
 	assert(side_valid(attacking_side));

@@ -15,7 +15,7 @@ int file_and_rank_to_64(int f, int r) {
 	return ((r * 8) + f);
 }
 
-int parse_fen(char* fen, BoardState* state) {
+int parse_fen(char* fen, struct BoardState* state) {
 	assert(fen);
 	assert(state);
 
@@ -124,7 +124,7 @@ int parse_fen(char* fen, BoardState* state) {
 	return 0;
 }
 
-int reset_board(BoardState *state) {
+int reset_board(struct BoardState *state) {
 	// reset 120 board
 	for (int sq = 0; sq < BRD_SQ_NUM; sq++) {
 		if (SQ_120_TO_64[sq] == -1)
@@ -162,7 +162,7 @@ int reset_board(BoardState *state) {
 	return 0;
 }
 
-int print_board(const BoardState* state) {
+int print_board(const struct BoardState* state) {
 
 	printf("\nGame Board:\n\n");
 
@@ -195,7 +195,7 @@ int print_board(const BoardState* state) {
 	return 0;
 }
 
-int update_material_list(BoardState* state) {
+int update_material_list(struct BoardState* state) {
 
 	for (int sq120 = 0; sq120 < BRD_SQ_NUM; sq120++) {
 		int piece = state->pieces[sq120];
@@ -231,7 +231,7 @@ int update_material_list(BoardState* state) {
 	return 0;
 }
 
-bool check_board(const BoardState* state) {
+bool check_board(const struct BoardState* state) {
 
 	int _pieceCounts[PIECE_NUM] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	int _bigPieceCounts[COLOR_NUM - 1] = {0, 0};

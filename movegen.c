@@ -33,7 +33,7 @@ static unsigned int build_move(unsigned int from, unsigned int to, unsigned int 
 
 static bool sq_offboard(const int sq120) {return SQ_TO_FILE[sq120] == FILE_NONE;}
 
-static int add_quiet_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_quiet_move(const struct BoardState* state, unsigned int move, struct MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -42,7 +42,7 @@ static int add_quiet_move(const BoardState* state, unsigned int move, MoveList* 
 	return 0;
 }
 
-static int add_capture_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_capture_move(const struct BoardState* state, unsigned int move, struct MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -51,7 +51,7 @@ static int add_capture_move(const BoardState* state, unsigned int move, MoveList
 	return 0;
 }
 
-static int add_en_passant_move(const BoardState* state, unsigned int move, MoveList* list) {
+static int add_en_passant_move(const struct BoardState* state, unsigned int move, struct MoveList* list) {
 	// list->moves is an array of structs of type Move
 	// struct Move contains int move and int score 
 	list->moves[list->count].move = move;
@@ -61,9 +61,9 @@ static int add_en_passant_move(const BoardState* state, unsigned int move, MoveL
 }
 
 // in between function to handle pawn promotions
-static int add_wP_cap_move(const BoardState* state, const unsigned int from,
+static int add_wP_cap_move(const struct BoardState* state, const unsigned int from,
 			const unsigned int to, const unsigned int capture,
-			MoveList* list) {
+			struct MoveList* list) {
 
 	assert(piece_valid_empty(capture));
 	assert(sq_on_board(from));
@@ -80,9 +80,9 @@ static int add_wP_cap_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 
-static int add_wP_move(const BoardState* state, const unsigned int from,
+static int add_wP_move(const struct BoardState* state, const unsigned int from,
 			const unsigned int to,
-			MoveList* list) {
+			struct MoveList* list) {
 
 	assert(sq_on_board(from));
 	assert(sq_on_board(to));
@@ -98,9 +98,9 @@ static int add_wP_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 // in between function to handle pawn promotions
-static int add_bP_cap_move(const BoardState* state, const unsigned int from,
+static int add_bP_cap_move(const struct BoardState* state, const unsigned int from,
 			const unsigned int to, const unsigned int capture,
-			MoveList* list) {
+			struct MoveList* list) {
 
 	assert(piece_valid_empty(capture));
 	assert(sq_on_board(from));
@@ -117,9 +117,9 @@ static int add_bP_cap_move(const BoardState* state, const unsigned int from,
 	return 0;
 }
 
-static int add_bP_move(const BoardState* state, const unsigned int from,
+static int add_bP_move(const struct BoardState* state, const unsigned int from,
 			const unsigned int to,
-			MoveList* list) {
+			struct MoveList* list) {
 
 	assert(sq_on_board(from));
 	assert(sq_on_board(to));
@@ -136,7 +136,7 @@ static int add_bP_move(const BoardState* state, const unsigned int from,
 }
 
 
-int generate_all_moves(const BoardState* state, MoveList* list) {
+int generate_all_moves(const struct BoardState* state, struct MoveList* list) {
 	assert(check_board(state));
 	
 	const int side = state->sideToMove;

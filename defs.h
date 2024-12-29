@@ -73,26 +73,25 @@ static const U32 F_CAPTURE = 0x43C000u;
 static const U32 F_PROMOTION = 0x3C0000u;
 
 /***STRUCTS***/
-typedef struct {
+struct Move {
 	U32 move;
 	int score;
-} Move;
+};
 
-typedef struct {
-	Move moves[MAX_POSITION_MOVES];
+struct MoveList {
+	struct Move moves[MAX_POSITION_MOVES];
 	int count;
-} MoveList;
+};
 
 // Stores a past board state
-typedef struct {
+struct PastState{
 	U32 move;
 	unsigned char castlePerm;
 	int enPassantSquare;
 	int fiftyMoveCounter;
 	U64 positionKey;
-} PastState;
-
-typedef struct {
+};
+struct BoardState{
 	// Tracks state of each square
 	int pieces[BRD_SQ_NUM];
 	// pawn bitboards for white, black, and combined
@@ -122,8 +121,8 @@ typedef struct {
 
 	// total game ply
 	int historyPly;
-	PastState history[MAX_GAME_MOVES];
-} BoardState;
+	struct PastState history[MAX_GAME_MOVES];
+};
 
 
 /* ==========================================================================
@@ -136,11 +135,11 @@ typedef struct {
 int init(void);
 int file_and_rank_to_120(int f, int r);
 int file_and_rank_to_64(int f, int r);
-int reset_board(BoardState *state);
-int parse_fen(char* fen, BoardState* state);
-int print_board(const BoardState* state);
-int update_material_list(BoardState* state);
-bool check_board(const BoardState* state);
+int reset_board(struct BoardState *state);
+int parse_fen(char* fen, struct BoardState* state);
+int print_board(const struct BoardState* state);
+int update_material_list(struct BoardState* state);
+bool check_board(const struct BoardState* state);
 
 /***Constants***/
 // lookup arrays to convert between indices of 120 square and 64 square boards
@@ -148,7 +147,7 @@ extern const int SQ_64_TO_120[64];
 extern const int SQ_120_TO_64[BRD_SQ_NUM];
 
 /* ==========================================================================
- * BITBOARDS
+ * BITBOARD bitboard.c
  * ========================================================================== */
 
 
@@ -167,14 +166,14 @@ extern const int bitTable[64];
 
 
 /* ==========================================================================
- * HASHKEY
+ * HASHKEY hashkey.c
  * ========================================================================== */
 
 
 /***FUNCTIONS***/
 
 int init_hashkeys(void);
-U64 generate_position_key(const BoardState const *state);
+U64 generate_position_key(const struct BoardState const *state);
 
 /***GLOBALS***/
 extern U64 PIECE_KEYS[PIECE_NUM][BRD_SQ_NUM];
@@ -217,7 +216,7 @@ extern const int SQ_TO_RANK[BRD_SQ_NUM];
 
 
 /***FUNCTIONS***/
-bool sq_attacked(const int sq120, const int side, const BoardState* state);
+bool sq_attacked(const int sq120, const int side, const struct BoardState* state);
 
 /* ==========================================================================
  * IO: io.c
@@ -226,8 +225,8 @@ bool sq_attacked(const int sq120, const int side, const BoardState* state);
 /***FUNCTIONS***/
 char* print_sq(const int sq120);
 char* print_move(const unsigned int move);
-int print_move_list(const MoveList* list);
-int parse_move(char* ptrChar, BoardState* state);
+int print_move_list(const struct MoveList* list);
+int parse_move(char* ptrChar, struct BoardState* state);
 
 /* ==========================================================================
  * VALIDATE: validate.c
@@ -244,15 +243,15 @@ bool piece_valid_empty(const int p);
  * ========================================================================== */
 
 /***FUNTIONS***/
-int generate_all_moves(const BoardState* state, MoveList* list);
+int generate_all_moves(const struct BoardState* state, struct MoveList* list);
 
 /* ==========================================================================
  * MAKE_MOVE: make_move.c
  * ========================================================================== */
 
 /*FUNCTIONS*/
-bool make_move(BoardState* state, const U32 move);
-void take_move(BoardState* state);
+bool make_move(struct BoardState* state, const U32 move);
+void take_move(struct BoardState* state);
 
 /* ==========================================================================
  * PERFT: perft.c
@@ -260,15 +259,15 @@ void take_move(BoardState* state);
 
 /*FUNCTIONS*/
 // void perftTest(const int depth, BoardState* state);
-long perft(BoardState* state, int depth, bool show_output);
-void perft_from_file(BoardState* state, char* perft_file, bool verbose);
+long perft(struct BoardState* state, int depth, bool show_output);
+void perft_from_file(struct BoardState* state, char* perft_file, bool verbose);
 
 /* ==========================================================================
  * SEARCH: search.c
  * ========================================================================== */
 
 /*FUNCTIONS*/
-void search_position(BoardState* state);
+void search_position(struct BoardState* state);
 
 /* ==========================================================================
  * MISC: misc.c

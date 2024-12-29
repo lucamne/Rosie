@@ -10,8 +10,8 @@ int main()
 {
 	init();
 	
-	BoardState* state = malloc(sizeof(BoardState));
-	MoveList* mList = malloc(sizeof(MoveList));
+	struct BoardState* state = malloc(sizeof(struct BoardState));
+	struct MoveList* mList = malloc(sizeof(struct MoveList));
 
 	parse_fen(STARTING_FEN, state);
 

@@ -4,10 +4,10 @@
 #include <stdio.h>
 
 
-long get_leaf_nodes(BoardState* state, int depth) {
+long get_leaf_nodes(struct BoardState* state, int depth) {
 	if (depth == 0) { return 1; }
 
-	MoveList* mList = malloc(sizeof(MoveList));
+	struct MoveList* mList = malloc(sizeof(struct MoveList));
 	generate_all_moves(state, mList);
 
 	long leafNodes = 0;
@@ -23,10 +23,10 @@ long get_leaf_nodes(BoardState* state, int depth) {
 	return leafNodes;
 }
 
-long perft(BoardState* state, int depth, bool show_output) {
+long perft(struct BoardState* state, int depth, bool show_output) {
 	assert(depth > 0);
 
-	MoveList* mList = malloc(sizeof(MoveList));
+	struct MoveList* mList = malloc(sizeof(struct MoveList));
 	generate_all_moves(state, mList);
 
 	long leafNodes = 0;
@@ -49,7 +49,7 @@ long perft(BoardState* state, int depth, bool show_output) {
 	return leafNodes;
 }
 
-void perft_from_file(BoardState* state, char* perft_file, bool verbose) {
+void perft_from_file(struct BoardState* state, char* perft_file, bool verbose) {
 
 	FILE* f = fopen(perft_file, "r");
 	if (!f) {
