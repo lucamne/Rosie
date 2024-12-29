@@ -8,7 +8,6 @@
 
 int main()
 {
-
 	init();
 	
 	BoardState* state = malloc(sizeof(BoardState));
